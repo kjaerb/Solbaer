@@ -1,33 +1,37 @@
 <script lang="ts">
 	import type { Option } from '../types/Option';
-
+	import type { User } from '@prisma/client';
 	import Selector from '../components/selector.svelte';
+	import UserForm from '../components/userForm.svelte';
 
 	interface order {
 		name: Option;
 		kg: number;
 	}
 
+	$: user = {} as User;
+
 	$: orders = [{ name: '-', kg: 0 }] as order[];
 
 	function addOrder() {
 		orders = [...orders, { name: '-', kg: 0 }];
 	}
-
-	let name: string;
-	let email: string;
-	let phone: number;
 </script>
 
 <div class="w-full">
 	<div class="text-center">
-		<h1 class="text-center text-4xl py-4">Forudbestil dine ribs og solbær her</h1>
+		<h1 class="text-center text-4xl pt-2">Forudbestil dine ribs og solbær</h1>
 		<p>
 			Udfyld formen for at blive kontaktet, med information om hvornår vi høster, samt
 			afhentningstidspunkt
 		</p>
 	</div>
-
+	<UserForm
+		bind:fname={user.fname}
+		bind:lname={user.lname}
+		bind:email={user.email}
+		bind:phone={user.phone}
+	/>
 	<div class="p-4 flex justify-center items-center flex-col">
 		{#each orders as order}
 			{#key order.name}
@@ -57,7 +61,7 @@
 	<button
 		class="mx-auto shadow-lg border rounded-md w-full text-lg py-2 mt-10 bg-green-500 text-white font-bold"
 		on:click={() => {
-			console.log(orders);
+			console.log(orders, user);
 		}}>Bestil</button
 	>
 </div>
