@@ -13,12 +13,13 @@ generator client {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique @db.VarChar(255)
-  fname String  @db.VarChar(255)
-  lname String  @db.VarChar(255)
-  phone Int     @unique
-  order Order[]
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String   @unique @db.VarChar(255)
+  fname     String   @db.VarChar(255)
+  lname     String   @db.VarChar(255)
+  phone     Int      @unique
+  order     Order[]
 }
 
 model Order {
