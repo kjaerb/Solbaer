@@ -10,6 +10,36 @@
 
 	const colRef = collection(db, 'orders');
 	$: orders = [] as User[];
+	let solbaer: number;
+	let ribs: number;
+
+	function getSolbaer() {
+		let res = 0;
+
+		orders.forEach((order) => {
+			order.orders.forEach((elem) => {
+				if (elem.name === 'Solbær') {
+					res = res + elem.kg;
+				}
+			});
+		});
+
+		return res;
+	}
+
+	function getRibs() {
+		let res = 0;
+
+		orders.forEach((order) => {
+			order.orders.forEach((elem) => {
+				if (elem.name === 'Ribs') {
+					res += elem.kg;
+				}
+			});
+		});
+
+		return res;
+	}
 
 	onMount(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -23,11 +53,21 @@
 			snapshot.forEach((s) => {
 				orders = [...orders, s.data().user];
 			});
+			solbaer = getSolbaer();
+			ribs = getRibs();
 		});
 	});
 </script>
 
 <div class="overflow-x-auto relative my-4">
+	<div class="py-4 flex justify-between">
+		<p>Antal ordre: {orders.length}</p>
+		<div class="flex">
+			<p>Kg solbær: {solbaer}</p>
+			<p class="pl-2">Kg Ribs: {ribs}</p>
+		</div>
+	</div>
+
 	<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
 		<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 			<tr>
@@ -49,7 +89,7 @@
 								{order.lname}
 							</span>
 						</td>
-						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+						<td class="py-4 px-6 font-sm text-gray-900  dark:text-white">
 							{order.email}
 						</td>
 						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">

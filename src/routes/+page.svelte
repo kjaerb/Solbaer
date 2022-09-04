@@ -51,7 +51,7 @@
 			} else if (item.kg < 5) {
 				error = `Minimum bestilling for ${item.name} er 5kg. Bestil venligst ${
 					5 - item.kg
-				} mere, for at bestille`;
+				}kg mere, for at bestille`;
 			}
 		});
 
@@ -65,7 +65,6 @@
 			user
 		});
 
-		clearUser();
 		goto('/confirmed');
 	}
 </script>
