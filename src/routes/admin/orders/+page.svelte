@@ -23,8 +23,6 @@
 			snapshot.forEach((s) => {
 				orders = [...orders, s.data().user];
 			});
-
-			console.log(orders);
 		});
 	});
 </script>

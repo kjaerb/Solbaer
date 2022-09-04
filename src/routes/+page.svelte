@@ -1,9 +1,12 @@
 <script lang="ts">
 	import Selector from '../components/selector.svelte';
 	import UserForm from '../components/userForm.svelte';
-	import { addDoc } from 'firebase/firestore';
+	import { addDoc, collection } from 'firebase/firestore';
 	import type { User } from '../types/User';
 	import { goto } from '$app/navigation';
+	import { db } from '$lib/firebase';
+
+	const colRef = collection(db, 'orders');
 
 	$: error = ' ' as string;
 
@@ -17,6 +20,14 @@
 
 	function addOrder() {
 		user.orders = [...user.orders, { name: '-', kg: 0 }];
+	}
+
+	function clearUser() {
+		user.email = undefined;
+		user.fname = undefined;
+		user.lname = undefined;
+		user.orders = [{ name: '-', kg: 0 }];
+		user.phone = undefined;
 	}
 
 	function handleAddDoc() {
@@ -54,12 +65,13 @@
 			user
 		});
 
+		clearUser();
 		goto('/confirmed');
 	}
 </script>
 
 <!-- svelte-ignore module-script-reactive-declaration -->
-<div class="w-full">
+<div class="w-full pb-10">
 	<div class="text-center">
 		<h1 class="text-center text-4xl pt-2">Forudbestil dine solbær og ribs</h1>
 		<p>
