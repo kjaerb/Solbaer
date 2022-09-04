@@ -62,7 +62,8 @@
 		error = '';
 
 		addDoc(colRef, {
-			user
+			user,
+			createdAt: new Date()
 		});
 
 		goto('/confirmed');
@@ -72,8 +73,8 @@
 <!-- svelte-ignore module-script-reactive-declaration -->
 <div class="w-full pb-10">
 	<div class="text-center">
-		<h1 class="text-center text-4xl pt-2">Forudbestil dine solbær og ribs</h1>
-		<p>
+		<h1 class="text-center text-4xl pt-2 dark:text-white">Forudbestil dine solbær og ribs</h1>
+		<p class="dark:text-white">
 			Udfyld formen for at blive kontaktet, med information om hvornår vi høster, samt
 			afhentningstidspunkt
 		</p>
@@ -81,14 +82,14 @@
 	<div class="mt-0 md:mt-10">
 		<div class="md:grid md:grid-cols-2 md:gap-6">
 			<div class="mt-5 md:col-span-2 md:mt-0">
-				<div class="overflow-hidden shadow-md rounded-lg border sm:rounded-md">
+				<div class="overflow-hidden shadow-md rounded-lg border dark:border-white sm:rounded-md">
 					<UserForm
 						bind:fname={user.fname}
 						bind:lname={user.lname}
 						bind:email={user.email}
 						bind:phone={user.phone}
 					/>
-					<div class="px-4 p-6">
+					<div class="px-4 p-6 dark:bg-slate-700">
 						{#each user.orders as _order, index}
 							{#key index}
 								<Selector bind:kg={user.orders[index].kg} bind:name={user.orders[index].name} />
@@ -122,7 +123,7 @@
 		<p class="text-center text-red-500 font-bold text-lg pt-2">{error}</p>
 	{/if}
 	<button
-		class="mx-auto shadow-lg border rounded-md w-full text-lg py-2 mt-10 bg-green-500 text-white font-bold"
+		class="mx-auto shadow-lg border rounded-md w-full text-lg py-2 mt-10 bg-green-500 text-white font-bold dark:border-slate-800"
 		on:click={handleAddDoc}>Bestil</button
 	>
 </div>
