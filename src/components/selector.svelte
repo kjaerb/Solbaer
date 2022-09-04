@@ -1,10 +1,9 @@
 <script lang="ts">
 	import type { Option } from '../types/Option';
 
-	const options: Option[] = ['-', 'Ribs', 'Solbær'];
-
 	export let kg: number | undefined;
 	export let name: Option;
+	let options: Option[] = ['-', 'Solbær', 'Ribs'];
 
 	if (kg == 0) {
 		kg = undefined;

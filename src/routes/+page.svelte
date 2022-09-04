@@ -1,26 +1,81 @@
 <script lang="ts">
 	import type { Option } from '../types/Option';
-	import type { User } from '@prisma/client';
 	import Selector from '../components/selector.svelte';
 	import UserForm from '../components/userForm.svelte';
+	import { db } from '../initFirebase';
+	import { addDoc, collection, getDocs } from 'firebase/firestore';
+	import type { Order } from '../types/Order';
+	import type { User } from '../types/User';
+	import { goto } from '$app/navigation';
 
-	interface order {
-		name: Option;
-		kg: number;
-	}
+	const colRef = collection(db, 'orders');
 
-	$: user = {} as User;
+	getDocs(colRef).then((snapshot) => {
+		let orders: User[] = [];
+		snapshot.forEach((s) => {
+			orders.push(s.data().user);
+		});
 
-	$: orders = [{ name: '-', kg: 0 }] as order[];
+		console.log(orders);
+	});
+
+	$: error = ' ' as string;
+
+	$: user = {
+		fname: undefined,
+		lname: undefined,
+		email: undefined,
+		phone: undefined,
+		orders: [{ name: '-', kg: 0 }]
+	} as User;
 
 	function addOrder() {
-		orders = [...orders, { name: '-', kg: 0 }];
+		user.orders = [...user.orders, { name: '-', kg: 0 }];
+	}
+
+	function handleAddDoc() {
+		error = '';
+		for (const item in user) {
+			if (user[item] === undefined) {
+				error = 'Udfyld venligst alle kontakt informationer';
+				return;
+			}
+		}
+
+		user.orders.forEach((item) => {
+			console.log(item);
+			if (item.kg === undefined || item.kg === 0) {
+				if (item.name === '-') {
+					error = `Vælg venligst et produkt`;
+				} else {
+					error = `Udfyld venligst antal kg for ${item.name}`;
+				}
+				return;
+			} else if (item.kg < 5) {
+				error = `Minimum bestilling for ${item.name} er 5kg. Bestil venligst ${
+					5 - item.kg
+				} mere, for at bestille`;
+			}
+		});
+
+		if (error !== '') {
+			return;
+		}
+
+		error = '';
+
+		addDoc(colRef, {
+			user
+		});
+
+		goto('/confirmed');
 	}
 </script>
 
+<!-- svelte-ignore module-script-reactive-declaration -->
 <div class="w-full">
 	<div class="text-center">
-		<h1 class="text-center text-4xl pt-2">Forudbestil dine ribs og solbær</h1>
+		<h1 class="text-center text-4xl pt-2">Forudbestil dine solbær og ribs</h1>
 		<p>
 			Udfyld formen for at blive kontaktet, med information om hvornår vi høster, samt
 			afhentningstidspunkt
@@ -37,12 +92,12 @@
 						bind:phone={user.phone}
 					/>
 					<div class="px-4 sm:p-6">
-						{#each orders as order}
-							{#key order.name}
-								<Selector bind:kg={order.kg} bind:name={order.name} />
+						{#each user.orders as _order, index}
+							{#key index}
+								<Selector bind:kg={user.orders[index].kg} bind:name={user.orders[index].name} />
 							{/key}
 						{/each}
-						{#if orders.length < 2}
+						{#if user.orders.length < 2}
 							<div on:click={addOrder} class="flex justify-center items-center">
 								<svg
 									xmlns="http://www.w3.org/2000/svg"
@@ -66,10 +121,11 @@
 			</div>
 		</div>
 	</div>
+	{#if error}
+		<p class="text-center text-red-500 font-bold text-lg pt-2">{error}</p>
+	{/if}
 	<button
 		class="mx-auto shadow-lg border rounded-md w-full text-lg py-2 mt-10 bg-green-500 text-white font-bold"
-		on:click={() => {
-			console.log(orders, user);
-		}}>Bestil</button
+		on:click={handleAddDoc}>Bestil</button
 	>
 </div>

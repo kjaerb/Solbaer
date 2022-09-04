@@ -1,8 +1,8 @@
 <script lang="ts">
-	export let fname: string;
-	export let lname: string;
-	export let email: string;
-	export let phone: number;
+	export let fname: string | undefined;
+	export let lname: string | undefined;
+	export let email: string | undefined;
+	export let phone: number | undefined;
 </script>
 
 <div class="bg-white px-4 py-5 sm:p-6 border-b">
