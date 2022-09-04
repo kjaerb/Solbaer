@@ -39,8 +39,9 @@
 			>
 			<input
 				bind:value={email}
-				type="text"
+				type="email"
 				required
+				pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
 				name="email-address"
 				id="email-address"
 				autocomplete="email"

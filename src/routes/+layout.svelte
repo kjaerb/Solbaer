@@ -4,7 +4,7 @@
 	import Footer from '../components/layout/footer.svelte';
 </script>
 
-<div class="mx-auto max-w-xs sm:max-w-xl md:max-w-xl lg:max-w-4xl h-screen">
+<div class="mx-auto max-w-screen px-8 sm:max-w-xl md:max-w-xl lg:max-w-4xl h-screen">
 	<Header />
 
 	<slot />

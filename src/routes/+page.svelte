@@ -2,9 +2,8 @@
 	import type { Option } from '../types/Option';
 	import Selector from '../components/selector.svelte';
 	import UserForm from '../components/userForm.svelte';
-	import { db } from '../initFirebase';
+	import { db } from '$lib/firebase';
 	import { addDoc, collection, getDocs } from 'firebase/firestore';
-	import type { Order } from '../types/Order';
 	import type { User } from '../types/User';
 	import { goto } from '$app/navigation';
 
@@ -91,7 +90,7 @@
 						bind:email={user.email}
 						bind:phone={user.phone}
 					/>
-					<div class="px-4 sm:p-6">
+					<div class="px-4 p-6">
 						{#each user.orders as _order, index}
 							{#key index}
 								<Selector bind:kg={user.orders[index].kg} bind:name={user.orders[index].name} />
