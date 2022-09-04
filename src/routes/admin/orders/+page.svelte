@@ -1,10 +1,15 @@
 <script lang="ts">
-	import app from '$lib/firebase';
 	import { onMount } from 'svelte';
-	import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
+	import { getAuth, onAuthStateChanged } from 'firebase/auth';
+	import { collection, getDocs } from 'firebase/firestore';
 	import { goto } from '$app/navigation';
+	import type { User } from 'src/types/User';
+	import { db } from '$lib/firebase';
 
 	const auth = getAuth();
+
+	const colRef = collection(db, 'orders');
+	$: orders = [] as User[];
 
 	onMount(() => {
 		onAuthStateChanged(auth, (user) => {
@@ -14,20 +19,56 @@
 				goto('/admin');
 			}
 		});
-	});
-
-	function logout() {
-		signOut(auth)
-			.then(() => {
-				console.log('signing out');
-			})
-			.catch((error) => {
-				console.error(error);
+		getDocs(colRef).then((snapshot) => {
+			snapshot.forEach((s) => {
+				orders = [...orders, s.data().user];
 			});
-	}
+
+			console.log(orders);
+		});
+	});
 </script>
 
-<div>
-	<h1>Hello orders</h1>
-	<button on:click={logout}>Log ud</button>
+<div class="overflow-x-auto relative my-4">
+	<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+		<thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+			<tr>
+				<th scope="col" class="py-3 px-6">Navn</th>
+				<th scope="col" class="py-3 px-6">Email</th>
+				<th scope="col" class="py-3 px-6">Tlf</th>
+				<th scope="col" class="py-3 px-6">Bestilling</th>
+			</tr>
+		</thead>
+		<tbody>
+			{#each orders as order, index}
+				{#key index}
+					<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							<span>
+								{order.fname}
+							</span>
+							<span>
+								{order.lname}
+							</span>
+						</td>
+						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							{order.email}
+						</td>
+						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							{order.phone}
+						</td>
+						<td class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+							<ul>
+								{#each order.orders as elem}
+									<li>
+										{elem.name}: {elem.kg}Kg
+									</li>
+								{/each}
+							</ul>
+						</td>
+					</tr>
+				{/key}
+			{/each}
+		</tbody>
+	</table>
 </div>

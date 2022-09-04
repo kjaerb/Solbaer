@@ -1,22 +1,9 @@
 <script lang="ts">
-	import type { Option } from '../types/Option';
 	import Selector from '../components/selector.svelte';
 	import UserForm from '../components/userForm.svelte';
-	import { db } from '$lib/firebase';
-	import { addDoc, collection, getDocs } from 'firebase/firestore';
+	import { addDoc } from 'firebase/firestore';
 	import type { User } from '../types/User';
 	import { goto } from '$app/navigation';
-
-	const colRef = collection(db, 'orders');
-
-	getDocs(colRef).then((snapshot) => {
-		let orders: User[] = [];
-		snapshot.forEach((s) => {
-			orders.push(s.data().user);
-		});
-
-		console.log(orders);
-	});
 
 	$: error = ' ' as string;
 

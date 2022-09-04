@@ -1,10 +1,29 @@
 <script>
 	import { goto } from '$app/navigation';
+	import { userStore } from '../../stores/user';
+	import { signOut, getAuth } from 'firebase/auth';
+
+	const auth = getAuth();
+
+	function logout() {
+		signOut(auth)
+			.then(() => {
+				console.log('signing out');
+				userStore.set(undefined);
+				goto('/admin');
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	}
 </script>
 
-<div
-	on:click={() => goto('/')}
-	class="py-4 flex justify-center items-center border-b cursor-pointer"
->
-	<img class="mx-auto" src={'/logo.png'} alt="" />
+<div class="py-4 flex justify-center items-center border-b flex-col">
+	<img on:click={() => goto('/')} class="mx-auto cursor-pointer" src={'/logo.png'} alt="" />
+	{#if $userStore}
+		<div class="border-t w-full mt-4 pt-4 flex justify-between">
+			<a href="/admin/orders">Velkommen {$userStore.email}</a>
+			<button on:click={logout}>Log ud</button>
+		</div>
+	{/if}
 </div>
