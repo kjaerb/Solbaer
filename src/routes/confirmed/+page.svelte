@@ -1,13 +1,19 @@
-<div class="my-10 flex justify-center items-center flex-col">
-	<svg class="checkmark w-1/4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
-		<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
-		<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
-	</svg>
+<script>
+	import Layout from '../../layouts/+default.svelte';
+</script>
 
-	<h1 class="order-confirmed text-center dark:text-white">
-		Din bestilling er modtaget. Vi kontakter dig med mere information senere.
-	</h1>
-</div>
+<Layout>
+	<div class="my-10 flex justify-center items-center flex-col">
+		<svg class="checkmark w-1/4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+			<circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" />
+			<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
+		</svg>
+
+		<h1 class="order-confirmed text-center dark:text-white">
+			Din bestilling er modtaget. Vi kontakter dig med mere information senere.
+		</h1>
+	</div>
+</Layout>
 
 <style>
 	.checkmark__circle {
