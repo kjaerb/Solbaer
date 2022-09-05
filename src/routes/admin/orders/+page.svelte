@@ -6,34 +6,21 @@
 	import { goto } from '$app/navigation';
 	import type { User } from 'src/types/User';
 	import { db } from '$lib/firebase';
+	import type { Option } from '../../../types/Option';
 
 	const auth = getAuth();
 
 	const colRef = collection(db, 'orders');
 	$: orders = [] as User[];
-	let solbaer: number;
-	let ribs: number;
+	$: solbaer = 0 as number;
+	$: ribs = 0 as number;
 
-	function getSolbaer() {
+	function getKg(name: Option) {
 		let res = 0;
 
 		orders.forEach((order) => {
 			order.orders.forEach((elem) => {
-				if (elem.name === 'Solbær') {
-					res = res + elem.kg;
-				}
-			});
-		});
-
-		return res;
-	}
-
-	function getRibs() {
-		let res = 0;
-
-		orders.forEach((order) => {
-			order.orders.forEach((elem) => {
-				if (elem.name === 'Ribs') {
+				if (elem.name === name) {
 					res += elem.kg;
 				}
 			});
@@ -54,8 +41,9 @@
 			snapshot.forEach((s) => {
 				orders = [...orders, s.data().user];
 			});
-			solbaer = getSolbaer();
-			ribs = getRibs();
+
+			solbaer = getKg('Solbær');
+			ribs = getKg('Ribs');
 		});
 	});
 
