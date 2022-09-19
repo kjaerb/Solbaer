@@ -7,7 +7,7 @@
 	export let phone: number | undefined;
 </script>
 
-<div class="bg-white px-4 py-5 sm:p-6 border-b dark:bg-slate-700">
+<div class="bg-white px-4 py-5 sm:p-6 border-b ">
 	<div class="grid grid-cols-6 gap-6">
 		<Input
 			_class="col-span-6 sm:col-span-3"

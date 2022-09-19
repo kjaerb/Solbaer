@@ -9,7 +9,7 @@
 			<path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" />
 		</svg>
 
-		<h1 class="order-confirmed text-center dark:text-white">
+		<h1 class="order-confirmed text-center ">
 			Din bestilling er modtaget. Vi kontakter dig med mere information senere.
 		</h1>
 	</div>
@@ -79,7 +79,7 @@
 	}
 	@keyframes fill {
 		100% {
-			box-shadow: inset 0px 0px 0px 66px #7ac142;
+			box-shadow: inset 0px 0px 0px 120px #7ac142;
 		}
 	}
 </style>

@@ -1,4 +1,5 @@
 import { initializeApp } from 'firebase/app';
+import 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 
 const apiKey = import.meta.env.VITE_FIREBASE_APIKEY;
